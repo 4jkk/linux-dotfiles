@@ -1,0 +1,85 @@
+############################################
+# STARSHIP – SINGLE MAROON BLOCK PROMPT
+# akk@medusa akk/Repos/test  branch status
+############################################
+
+# ------------------------------------------------
+# PROMPT LAYOUT (ONE CONTINUOUS BLOCK)
+# ------------------------------------------------
+format = """
+[](#6e2c3a)\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+[](fg:#6e2c3a)
+"""
+
+# ------------------------------------------------
+# USERNAME
+# ------------------------------------------------
+[username]
+show_always = true
+style_user = "bg:#6e2c3a fg:#ffffff bold"
+style_root = "bg:#6e2c3a fg:#ffffff bold"
+format = '[ $user]($style)'
+
+# ------------------------------------------------
+# HOSTNAME
+# ------------------------------------------------
+[hostname]
+ssh_only = false
+style = "bg:#6e2c3a fg:#ffffff bold"
+format = '[@$hostname]($style)'
+
+# ------------------------------------------------
+# DIRECTORY (FULL PATH LIKE akk/Repos/test)
+# ------------------------------------------------
+[directory]
+style = "bg:#6e2c3a fg:#ffffff"
+
+# Show path relative to HOME instead of absolute
+# /home/akk/Repos/test → akk/Repos/test
+format = '[ $path ]($style)'
+
+# FULL path, no truncation
+truncation_length = 0
+
+# Replace /home/akk with akk
+home_symbol = "akk"
+
+# ------------------------------------------------
+# GIT BRANCH
+# ------------------------------------------------
+[git_branch]
+disabled = false
+style = "bg:#6e2c3a fg:#ffffff bold"
+format = '[  $branch ]($style)'
+
+# ------------------------------------------------
+# GIT STATUS
+# ------------------------------------------------
+[git_status]
+disabled = false
+style = "bg:#6e2c3a fg:#ffffff"
+format = '([$all_status$ahead_behind]($style))'
+
+# ------------------------------------------------
+# REMOVE PROMPT SYMBOL (NO ARROWS)
+# ------------------------------------------------
+[character]
+disabled = true
+
+# ------------------------------------------------
+# DISABLE UNUSED GIT MODULES
+# ------------------------------------------------
+[git_commit]
+disabled = true
+
+[git_state]
+disabled = true
+
+[git_metrics]
+disabled = true
+
