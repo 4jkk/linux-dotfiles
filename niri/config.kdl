@@ -1,0 +1,165 @@
+
+input {
+    keyboard {
+        xkb {
+            layout "us"
+        }
+        numlock
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+    }
+
+    mouse {
+        natural-scroll
+    }
+}
+
+output "eDP-1" {
+    mode "1920x1080@120"
+    scale 1
+    position x=0 y=0
+}
+
+spawn-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+spawn-at-startup "gnome-keyring-daemon --start --components=secrets"
+
+layout {
+    gaps 8
+    center-focused-column "never"
+    
+    default-column-width { proportion 0.33; }
+
+    focus-ring {
+        width 2
+        active-color "#cc0000"
+        inactive-color "#ffff99"
+    }
+
+    border {
+        off
+        width 2
+        active-color "#cc0000"
+        inactive-color "#ffff99"
+    }
+}
+
+spawn-at-startup "waybar"
+spawn-at-startup "swaybg -i /home/akk/Downloads/cosy-retreat-sunset.png -m fill"
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+animations {
+}
+
+binds {
+    Super+W { close-window; }
+    Super+T { toggle-window-floating; }
+    Super+F { maximize-column; }
+    Super+Ctrl+F { fullscreen-window; }
+    Super+O { toggle-window-floating; }
+
+    Super+Left  { focus-column-left; }
+    Super+Right { focus-column-right; }
+    Super+Up    { focus-window-up; }
+    Super+Down  { focus-window-down; }
+    
+    Super+1 { focus-workspace 1; }
+    Super+2 { focus-workspace 2; }
+    Super+3 { focus-workspace 3; }
+    Super+4 { focus-workspace 4; }
+    Super+5 { focus-workspace 5; }
+    Super+6 { focus-workspace 6; }
+    Super+7 { focus-workspace 7; }
+    Super+8 { focus-workspace 8; }
+    Super+9 { focus-workspace 9; }
+    Super+Page_Down { focus-workspace-down; }
+    Super+Page_Up { focus-workspace-up; }
+    Super+WheelScrollDown { focus-workspace-down; }
+    Super+WheelScrollUp { focus-workspace-up; }
+
+    Super+Shift+1 { move-column-to-workspace 1; }
+    Super+Shift+2 { move-column-to-workspace 2; }
+    Super+Shift+3 { move-column-to-workspace 3; }
+    Super+Shift+4 { move-column-to-workspace 4; }
+    Super+Shift+5 { move-column-to-workspace 5; }
+    Super+Shift+6 { move-column-to-workspace 6; }
+    Super+Shift+7 { move-column-to-workspace 7; }
+    Super+Shift+8 { move-column-to-workspace 8; }
+    Super+Shift+9 { move-column-to-workspace 9; }
+    Super+Ctrl+Page_Down { move-column-to-workspace-down; }
+    Super+Ctrl+Page_Up { move-column-to-workspace-up; }
+
+    Super+J { consume-or-expel-window-right; }
+    Super+P { switch-preset-column-width; }
+
+    Super+Shift+Left  { move-column-left; }
+    Super+Shift+Right { move-column-right; }
+    Super+Shift+Up    { move-window-up; }
+    Super+Shift+Down  { move-window-down; }
+
+    Super+S { screenshot; }
+
+    Super+Return { spawn "ghostty"; }
+    Alt+Space { spawn "~/.config/niri/scripts/control-center.sh"; }
+
+    Super+Escape { spawn "~/.config/niri/scripts/powermenu.sh"; }
+
+
+    Super+Shift+F { spawn "thunar"; }
+    Super+Shift+B { spawn "brave-browser"; }
+    Super+Shift+Alt+B { spawn "brave-browser --incognito"; }
+    Super+Shift+G { spawn "brave-browser https://github.com/ajthkmr"; }
+    Super+Shift+N { spawn "nvim"; }
+    Alt+Y { spawn "brave-browser --new-window https://youtube.com"; }
+    Alt+G { spawn "brave-browser --new-tab https://github.com/"; }
+
+
+
+    Super+L { spawn "loginctl lock-session"; }
+    Super+Ctrl+I { spawn "loginctl lock-session"; }
+    // Super+Ctrl+N for nightlight - not installed
+
+    // === MEDIA & HARDWARE CONTROLS ===
+    XF86AudioRaiseVolume { spawn-sh "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"; }
+    XF86AudioLowerVolume { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"; }
+    XF86AudioMute { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+    XF86AudioMicMute { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+    Alt+XF86AudioRaiseVolume { spawn-sh "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 1%+"; }
+    Alt+XF86AudioLowerVolume { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-"; }
+
+    // === BRIGHTNESS ===
+    XF86MonBrightnessUp { spawn-sh "brightnessctl set 5%+"; }
+    XF86MonBrightnessDown { spawn-sh "brightnessctl set 5%-"; }
+    Alt+XF86MonBrightnessUp { spawn-sh "brightnessctl set 1%+"; }
+    Alt+XF86MonBrightnessDown { spawn-sh "brightnessctl set 1%-"; }
+
+    // === MEDIA PLAYBACK ===
+    XF86AudioNext { spawn-sh "playerctl next"; }
+    XF86AudioPause { spawn-sh "playerctl play-pause"; }
+    XF86AudioPlay { spawn-sh "playerctl play-pause"; }
+    XF86AudioPrev { spawn-sh "playerctl previous"; }
+
+    // === SCREEN RECORDING ===
+    Alt+Print { spawn "wf-recorder"; }
+
+    // === QUIT ===
+    Super+Shift+E { quit; }
+    Ctrl+Alt+Delete { quit; }
+}
+
+window-rule {
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    default-column-width {}
+}
+
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
