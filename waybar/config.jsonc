@@ -1,0 +1,163 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 26,
+    "spacing": 2,
+    "modules-left": [
+        "niri/workspaces"
+    ],
+    "modules-right": [
+        "group/tray-group",
+        "tray",
+        "clock",
+        "clock#utc"
+    ],
+    "niri/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            "active": "\uf444",
+            "default": "\uf4c3"
+        },
+        "persistent-workspaces": {
+            "*": 3
+        },
+        "cursor": true,
+        "disable-scroll": true
+    },
+    "clock": {
+        "format": "{:%H:%M:%S}",
+        "interval": 1,
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#ccddff'><b>{}</b></span>",
+                "days": "<span color='#ccddff'><b>{}</b></span>",
+                "weeks": "<span color='#89b4fa'><b>W{}</b></span>",
+                "weekdays": "<span color='#f38ba8'><b>{}</b></span>",
+                "today": "<span color='#f38ba8'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-click-left": "tooltip",
+            "on-click-right": "mode"
+        }
+    },
+    "clock#utc": {
+        "format": " ({:%H} UTC)",
+        "timezone": "UTC"
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰝟",
+        "format-icons": {
+            "default": [
+                "󰕿",
+                "󰖀",
+                "󰕾"
+            ],
+            "default-muted": "󰝟"
+        },
+        "on-click": "pavucontrol"
+    },
+    "battery": {
+        "bat": "BAT1",
+        "interval": 1,
+        "format": "{icon}  {capacity}%",
+        "format-icons": [
+            "\uf244",
+            "\uf243",
+            "\uf242",
+            "\uf241",
+            "\uf240"
+        ],
+    },
+    "memory": {
+        "interval": 30,
+        "format": "\uf4bc  {used:0.1f}G"
+    },
+    "network": {
+        "format": "",
+        "format-ethernet": "\udb83\udc9d",
+        "format-wifi": "{icon}",
+        "format-disconnected": "\udb83\udc9c",
+        "format-icons": [
+            "\udb82\udd2f",
+            "\udb82\udd1f",
+            "\udb82\udd22",
+            "\udb82\udd25",
+            "\udb82\udd28"
+        ],
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+        "tooltip-format-ethernet": "{ifname}",
+        "tooltip-format-disconnected": "Disconnected",
+        "on-click": "~/.config/waybar/scripts/network.sh"
+    },
+"bluetooth": {
+        "format": "󰂯",
+        "format-disabled": "󰂲",
+        "format-off": "󰂲",
+        "format-on": "󰂯",
+        "format-connected": "󰂱",
+        "min-length": 2,
+        "max-length": 2,
+        "on-click": "~/.config/waybar/scripts/bluetooth.sh",
+        "tooltip-format": "Device Addr: {device_address}",
+        "tooltip-format-disabled": "Bluetooth Disabled",
+        "tooltip-format-off": "Bluetooth Off",
+        "tooltip-format-on": "Bluetooth Disconnected",
+        "tooltip-format-connected": "Device: {device_alias}",
+        "tooltip-format-enumerate-connected": "Device: {device_alias}",
+        "tooltip-format-connected-battery": "Device: {device_alias}\nBattery: {device_battery_percentage}%",
+        "tooltip-format-enumerate-connected-battery": "Device: {device_alias}\nBattery: {device_battery_percentage}%"
+    },
+    "tray": {
+        "icon-size": 16,
+        "spacing": 16
+    },
+    "custom/platform-profile": {
+        "format": "{icon} ",
+        "exec": "~/.config/waybar/platform_profile.sh",
+        "return-type": "json",
+        "restart-interval": 1,
+        "format-icons": {
+            "quiet": "\udb80\udf2a",
+            "balanced": "\udb80\ude10",
+            "performance": "\uf427",
+            "default": "?"
+        },
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "\udb80\udd76",
+            "deactivated": "\udb83\udfaa"
+        }
+    },
+    "custom/tray-toggle": {
+        "format": "|",
+        "tooltip": false,
+        "min-length": 1,
+        "max-length": 1,
+        "on-click": "~/.config/waybar/scripts/tray-toggle.sh toggle",
+        "on-click-right": "pkill -SIGUSR1 waybar"
+    },
+    "group/tray-group": {
+        "orientation": "horizontal",
+        "drawer": {
+            "transition-left-to-right": true,
+            "children-class": "tray-child"
+        },
+        "modules": [
+            "custom/tray-toggle",
+            "pulseaudio",
+            "battery",
+            "idle_inhibitor",
+            "network",
+            "bluetooth"
+        ]
+    }
+}
