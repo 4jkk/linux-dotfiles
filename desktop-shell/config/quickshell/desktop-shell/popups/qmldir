@@ -1,0 +1,8 @@
+module Popups
+StartMenu 1.0 StartMenu.qml
+PopupWindowFrame 1.0 PopupWindowFrame.qml
+AppLauncher 1.0 AppLauncher.qml
+ControlCenter 1.0 ControlCenter.qml
+CalendarPopup 1.0 CalendarPopup.qml
+VolumeOsd 1.0 VolumeOsd.qml
+NotificationCenter 1.0 NotificationCenter.qml
