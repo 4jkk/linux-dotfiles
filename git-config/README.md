@@ -28,8 +28,9 @@ Sets up GitHub authentication with three options:
 
 This will:
 - Install Git if not present
-- Configure your identity (default: ajthkmr / ajiiitth@gmail.com)
+- Prompt for your Git identity (no personal data is pre-filled)
 - Set up useful Git aliases and configurations
+- Configure secure credential storage and optional SSH commit signing
 
 ### Step 2: Set Up GitHub Authentication
 
@@ -46,10 +47,8 @@ Choose your preferred authentication method:
 
 ### Git Identity
 
-- **Name**: ajthkmr
-- **Email**: ajiiitth@gmail.com
-
-The script will ask if you want to use these defaults or enter custom values.
+The script prompts for your name and email; nothing is hardcoded. Your email is
+validated before it is written to `~/.gitconfig`.
 
 ### Git Aliases
 
@@ -70,7 +69,9 @@ git lg        # pretty colored log with graph
 
 - **Default branch**: main
 - **Editor**: nvim (or vim if available)
-- **Credential helper**: cache (1 hour timeout)
+- **Credential helper**: libsecret (system keyring) when available, otherwise an in-memory cache — never plaintext
+- **Commit signing**: optional SSH signing (Git 2.34+) if you opt in
+- **Transfer integrity**: `transfer.fsckObjects` enabled
 - **Pull strategy**: merge (not rebase)
 - **Diff tool**: vimdiff
 - **Line endings**: input (Linux)

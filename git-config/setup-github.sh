@@ -3,7 +3,7 @@
 # GitHub Authentication Setup Script
 # This script helps you set up SSH keys for GitHub authentication
 
-set -e  # Exit on error
+set -euo pipefail
 
 echo "======================================"
 echo "GitHub Authentication Setup"
@@ -16,6 +16,16 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
+
+# Select the most secure credential helper available.
+# Plaintext "store" is intentionally never used.
+select_credential_helper() {
+    if command -v secret-tool &> /dev/null && command -v gnome-keyring-daemon &> /dev/null; then
+        echo "libsecret"
+    else
+        echo "cache --timeout=3600"
+    fi
+}
 
 # Check if git is installed
 if ! command -v git &> /dev/null; then
@@ -58,7 +68,7 @@ case $AUTH_METHOD in
             echo ""
             if [[ ! $REPLY =~ ^[Yy]$ ]]; then
                 echo -e "${YELLOW}Enter a new filename (or press Enter for default):${NC}"
-                read -p "Filename: " CUSTOM_NAME
+                read -r -p "Filename: " CUSTOM_NAME
                 if [ ! -z "$CUSTOM_NAME" ]; then
                     SSH_KEY="$SSH_DIR/$CUSTOM_NAME"
                 fi
@@ -105,7 +115,7 @@ case $AUTH_METHOD in
         echo "4. Paste the key shown above"
         echo "5. Click 'Add SSH key'"
         echo ""
-        read -p "Press Enter when you've added the key to GitHub..."
+        read -r -p "Press Enter when you've added the key to GitHub..."
         echo ""
 
         # Test connection
@@ -142,6 +152,11 @@ case $AUTH_METHOD in
         echo ""
         echo -e "${GREEN}✓ GitHub CLI authentication complete!${NC}"
 
+        # Configure Git to use the gh credential helper (secure, no plaintext).
+        echo -e "${YELLOW}Configuring Git to use the GitHub CLI credential helper...${NC}"
+        gh auth setup-git
+        echo -e "${GREEN}✓ Git credential helper configured${NC}"
+
         # Test
         echo -e "${GREEN}Testing GitHub connection...${NC}"
         gh auth status
@@ -159,18 +174,23 @@ case $AUTH_METHOD in
         echo "5. Click 'Generate token'"
         echo "6. Copy the token (you won't see it again!)"
         echo ""
+        echo -e "${RED}Note: Tokens are less secure than SSH keys or gh. Prefer option 1 or 2.${NC}"
+        echo ""
         echo -e "${BLUE}After generating:${NC}"
-        echo "- Use the token as your password when prompted by Git"
-        echo "- Or store it with: git config --global credential.helper store"
-        echo "- Then do a git operation, and enter the token as password"
+        echo "- Use the token as your password when Git prompts you"
+        echo "- It will be stored in the system keyring, never in plaintext"
         echo ""
 
         read -p "Have you created your token? (y/n): " -n 1 -r
         echo ""
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            git config --global credential.helper store
-            echo -e "${GREEN}✓ Credential helper configured${NC}"
+        if [[ ${REPLY:-} =~ ^[Yy]$ ]]; then
+            CRED_HELPER=$(select_credential_helper)
+            git config --global credential.helper "$CRED_HELPER"
+            echo -e "${GREEN}✓ Credential helper configured: ${CRED_HELPER}${NC}"
             echo -e "${YELLOW}Next time you push/pull, enter your token as the password${NC}"
+            if [ "$CRED_HELPER" = "cache --timeout=3600" ]; then
+                echo -e "${YELLOW}Cached in memory only; you may be re-prompted after 1 hour.${NC}"
+            fi
         fi
         ;;
 

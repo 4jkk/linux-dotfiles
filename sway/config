@@ -1,0 +1,213 @@
+# Sway shortcuts adapted from 4jkk/linux-dotfiles/hyprland.
+set $mod Mod4
+set $term ghostty
+set $menu fuzzel
+set $actions python3 ~/.config/sway/scripts/actions.py
+
+output * bg /home/akk/Pictures/Wallpapers/wallhaven-gpjk37.jpg fill
+output DP-1 scale 1
+# Select only an advertised 180 Hz mode; otherwise retain the working mode.
+exec_always $actions display
+floating_modifier $mod normal
+
+# Thin window borders without individual title bars.
+default_border pixel 2
+default_floating_border pixel 2
+
+# Catppuccin Mocha: border, title background, text, indicator, child border.
+client.focused          #cba6f7 #313244 #cdd6f4 #cba6f7 #cba6f7
+client.focused_inactive #45475a #181825 #bac2de #45475a #45475a
+client.focused_tab_title #45475a #313244 #cdd6f4
+client.unfocused        #313244 #181825 #a6adc8 #313244 #313244
+client.urgent           #f38ba8 #f38ba8 #11111b #f38ba8 #f38ba8
+client.placeholder      #313244 #1e1e2e #cdd6f4 #313244 #313244
+
+# Open Ghostty
+bindsym $mod+Return exec $term
+# Open Noctalia launcher
+bindsym $mod+space exec $menu
+# Open Chrome
+bindsym $mod+Shift+b exec $actions launch browser
+# Open Chrome incognito
+bindsym $mod+Shift+Alt+b exec $actions launch browser --incognito
+# Open Dolphin
+bindsym $mod+Shift+f exec $actions launch files
+# Open Neovim in Ghostty
+bindsym $mod+Shift+n exec $actions launch editor
+# Open GitHub profile
+bindsym $mod+Shift+g exec $actions launch browser https://github.com/ajthkmr
+# Close window
+bindsym $mod+w kill
+# Toggle floating
+bindsym $mod+t floating toggle
+# Toggle fullscreen
+bindsym $mod+f fullscreen toggle
+# Toggle floating and sticky
+bindsym $mod+o floating toggle, sticky toggle
+# Toggle split orientation
+bindsym $mod+j split toggle
+# Toggle tabbed/split layout
+bindsym $mod+g layout toggle tabbed split
+# Show/hide next scratchpad window
+bindsym $mod+grave scratchpad show
+# Send window to scratchpad
+bindsym $mod+Alt+grave move scratchpad
+# Next existing workspace
+bindsym $mod+Tab workspace next
+# Previous existing workspace
+bindsym $mod+Shift+Tab workspace prev
+# Previous visited workspace
+bindsym $mod+Ctrl+Tab workspace back_and_forth
+# Scroll to next workspace
+bindsym $mod+button5 workspace next
+# Scroll to previous workspace
+bindsym $mod+button4 workspace prev
+# Reload config
+bindsym $mod+Shift+c reload
+# Enter resize mode
+bindsym $mod+r mode "resize"
+# Focus parent container
+bindsym $mod+a focus parent
+# Focus left
+bindsym $mod+Left focus left
+# Move window left
+bindsym $mod+Shift+Left move left
+# Focus down
+bindsym $mod+Down focus down
+# Move window down
+bindsym $mod+Shift+Down move down
+# Focus up
+bindsym $mod+Up focus up
+# Move window up
+bindsym $mod+Shift+Up move up
+# Focus right
+bindsym $mod+Right focus right
+# Move window right
+bindsym $mod+Shift+Right move right
+# Focus next container in layout
+bindsym Mod1+Tab focus next
+# Focus previous container in layout
+bindsym Mod1+Shift+Tab focus prev
+# Workspace 1
+bindsym $mod+1 workspace number 1
+# Send window to workspace 1
+bindsym $mod+Shift+1 move container to workspace number 1
+# Workspace 2
+bindsym $mod+2 workspace number 2
+# Send window to workspace 2
+bindsym $mod+Shift+2 move container to workspace number 2
+# Workspace 3
+bindsym $mod+3 workspace number 3
+# Send window to workspace 3
+bindsym $mod+Shift+3 move container to workspace number 3
+# Workspace 4
+bindsym $mod+4 workspace number 4
+# Send window to workspace 4
+bindsym $mod+Shift+4 move container to workspace number 4
+# Workspace 5
+bindsym $mod+5 workspace number 5
+# Send window to workspace 5
+bindsym $mod+Shift+5 move container to workspace number 5
+# Workspace 6
+bindsym $mod+6 workspace number 6
+# Send window to workspace 6
+bindsym $mod+Shift+6 move container to workspace number 6
+# Workspace 7
+bindsym $mod+7 workspace number 7
+# Send window to workspace 7
+bindsym $mod+Shift+7 move container to workspace number 7
+# Workspace 8
+bindsym $mod+8 workspace number 8
+# Send window to workspace 8
+bindsym $mod+Shift+8 move container to workspace number 8
+# Workspace 9
+bindsym $mod+9 workspace number 9
+# Send window to workspace 9
+bindsym $mod+Shift+9 move container to workspace number 9
+# Workspace 10
+bindsym $mod+0 workspace number 10
+# Send window to workspace 10
+bindsym $mod+Shift+0 move container to workspace number 10
+# Power menu
+bindsym $mod+Escape exec $actions power
+# Noctalia settings and control center
+bindsym $mod+comma exec noctalia msg settings-toggle
+bindsym $mod+Shift+space exec noctalia msg panel-toggle control-center
+# Show shortcuts
+bindsym $mod+k exec $actions keys
+# Open Noctalia audio controls
+bindsym $mod+XF86AudioMute exec noctalia msg panel-toggle control-center
+# Lock screen
+bindsym $mod+l exec swaylock -f -c 000000
+# Power/logout menu
+bindsym $mod+Shift+e exec $actions power
+# Copy
+bindsym $mod+c exec $actions clipboard c
+# Paste
+bindsym $mod+v exec $actions clipboard v
+# Cut
+bindsym $mod+x exec $actions clipboard x
+# Copy selected screenshot
+bindsym --release $mod+s exec $actions screenshot copy
+# Edit selected screenshot
+bindsym --release $mod+Shift+s exec $actions screenshot edit
+# Save selected screenshot
+bindsym --release Print exec $actions screenshot save
+# Copy selected screenshot
+bindsym --release Shift+Print exec $actions screenshot copy
+# Save full screenshot
+bindsym --release Ctrl+Print exec $actions screenshot full
+# Start/stop screen recording
+bindsym --release Mod1+Print exec $actions record
+# Raise volume 5%
+bindsym --locked XF86AudioRaiseVolume exec wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+
+# Lower volume 5%
+bindsym --locked XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+# Raise brightness 5%
+bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+# Lower brightness 5%
+bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+# Raise volume 1%
+bindsym --locked Mod1+XF86AudioRaiseVolume exec wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 1%+
+# Lower volume 1%
+bindsym --locked Mod1+XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-
+# Raise brightness 1%
+bindsym --locked Mod1+XF86MonBrightnessUp exec brightnessctl set 1%+
+# Lower brightness 1%
+bindsym --locked Mod1+XF86MonBrightnessDown exec brightnessctl set 1%-
+# Mute audio
+bindsym --locked XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+# Mute microphone
+bindsym --locked XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+# Next track
+bindsym --locked XF86AudioNext exec playerctl next
+# Previous track
+bindsym --locked XF86AudioPrev exec playerctl previous
+# Play/pause
+bindsym --locked XF86AudioPlay exec playerctl play-pause
+# Play/pause
+bindsym --locked XF86AudioPause exec playerctl play-pause
+
+mode "resize" {
+    bindsym h resize shrink width 10px
+    bindsym Left resize shrink width 10px
+    bindsym j resize grow height 10px
+    bindsym Down resize grow height 10px
+    bindsym k resize shrink height 10px
+    bindsym Up resize shrink height 10px
+    bindsym l resize grow width 10px
+    bindsym Right resize grow width 10px
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# Start Noctalia once on Sway login, including after reboot.
+# Clock, wallpaper, and shell preferences persist in ~/.local/state/noctalia/settings.toml.
+exec noctalia --daemon
+
+include /etc/sway/config.d/*
+
+
+include ~/.config/sway/noctalia
+include ~/.config/sway/noctalia-theme.conf
+
